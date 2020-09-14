@@ -1,0 +1,26 @@
+.heading {
+  color: #74b9ff;
+  text-transform: uppercase;
+  padding: 20px 0;
+}
+.messenger_form {
+  width: 95%;
+  background-color: #cdcfcf;
+  z-index: 1;
+  position: fixed !important;
+  bottom: 0px;
+  padding: 20px;
+  margin: 20px;
+}
+.app_form {
+  display: flex !important;
+  flex-flow: row !important
+  ;
+}
+.app_input {
+  flex-grow: 1;
+}
+
+.app_icon {
+  flex-grow: 0;
+}
