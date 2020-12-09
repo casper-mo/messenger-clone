@@ -5,8 +5,11 @@ import {
   Input,
   Grid,
   Typography,
+  Modal,
+  Button,
 } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
+import CloseIcon from "@material-ui/icons/Close";
 import firebase from "firebase";
 import FlipMove from "react-flip-move";
 
@@ -17,6 +20,7 @@ import "./App.css";
 function App() {
   const [input, setInput] = useState("");
   const [username, setUsername] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   useEffect(() => {
     db.collection("messages")
@@ -28,13 +32,14 @@ function App() {
       });
   }, []);
   useEffect(() => {
-    setUsername(prompt("Enter your Name:"));
+    setIsOpen(true);
+    // setUsername(prompt("Enter your Name:"));
   }, []);
 
   const submitHangler = (e) => {
     e.preventDefault();
     db.collection("messages").add({
-      username: username,
+      username: username ? username : "unknown",
       message: input,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
@@ -89,6 +94,29 @@ function App() {
           ))}
         </FlipMove>
       </Grid>
+      <Modal
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        aria-labelledby="Username"
+      >
+        <div className="username__modal">
+          <div className="header">
+            <CloseIcon onClick={() => setIsOpen(false)} />
+          </div>
+          <div className="body">
+            <FormControl component="form" onSubmit={() => setIsOpen(false)}>
+              <Input
+                placeholder="Enter Your name"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <Button variant="contained" color="secondary" type="submit">
+                Enter
+              </Button>
+            </FormControl>
+          </div>
+        </div>
+      </Modal>
     </Grid>
   );
 }
